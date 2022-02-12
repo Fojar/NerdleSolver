@@ -9,27 +9,32 @@ class IsValidNerdleTest {
 	@Test
 	fun `identify valid nerdles`() {
 
-		val validNerdles = listOf(
-			"10*1-8=2",
-			"11-4-2=5",
-			"1*7+5=12",
+		assertTrue(
+			listOf(
+				"10*1-8=2",
+				"11-4-2=5",
+				"1*7+5=12",
+			).all(::isValidNerdle)
 		)
-
-		assertTrue(validNerdles.all(::isValidNerdle))
 	}
 
 
 	@Test
 	fun `identify invalid nerdles`() {
 
-		val invalidNerdles = listOf(
-			"",
-			"bleh",
-			"1+1=2",
-			"1+2+3+4=",
-			"2+3+5=07",
+		assertTrue(
+			listOf(
+				"1+1=2",       // String too short.
+				"9*8=7654",    // Equals sign too far left.
+				"1+2+3+4=",    // Equals sign too far right.
+				"1+23=8/5",    // Right side not a number.
+				"2+3+5=07",    // Leading zero on the right.
+				"12345=12",    // No operators on the left.
+				"-1+3*2=5",    // Left starts with an operator.
+				"2/2+6*=8",    // Left ends with an operator.
+				"12*-3=45",    // Consecutive operators.
+			).none(::isValidNerdle)
 		)
-		assertTrue(invalidNerdles.none(::isValidNerdle))
 	}
 
 }
